@@ -58,7 +58,7 @@ soup = BeautifulSoup(wb_data.text,'lxml')
 print(soup)
 ```
 
-### 2.获取指定标签内容   
+### 2.获取指定标签对象   
 
 ```python
 titles = soup.select('div.bookmeta > div > span > a')
@@ -69,12 +69,58 @@ print(titles)
 
 ```python
 for title in titles:
-    print(title.string)
+    print(title.get_text())
 ```
 
+### 4.去掉\r，\n，\t ，空行    
+
+```python
+    title = title.get_text().replace('\t','').replace('\n','').replace('\r','')
+```
+
+```python
+    if(author==''):
+        continue;
+```
+
+### 5.遍历多个参数   
+
+```python
+#所有信息进行打包
+for title,author in zip(outBlankStrs_title,outEvens_author):
+```
+
+### 6.取奇数行   
+
+```python
+for index,outBlankStr in enumerate(outBlankStrs_author):
+    if index % 2 == 1:
+        continue
+```
+
+### 7.存入数组  
+
+```python
+#处理标题内容
+outBlankStrs_title = []
+for title in titles:
+    title = title.get_text().replace('\t','').replace('\n','').replace('\r','')
+    outBlankStrs_title.append(title)
+```
+
+### 8.获取动态加载数据   
 
 
-15min      组合成对象  
+
+
+
+
+
+
+
+11课后续：request伪造登陆信息    
+
+  
 
 
 
