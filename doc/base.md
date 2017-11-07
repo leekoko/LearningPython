@@ -110,9 +110,34 @@ for title in titles:
 
 ### 8.获取动态加载数据   
 
+获取动态js写入的数据，这里就用到selenium+PhantomJS   
+
+1. Selenium安装；
+
+   需要将Python和Selenium进行组合，当然Selenium也提供了基于python的实现，所以就需要把Selenium的包安装到python库中去，以便于python开发时进行调用。
+
+   敲CMD，进入命令窗口，转到D:\Python34\Scripts下，输入命令行：pip install selenium，执行之后，将自动化搜寻最新的selenium版本
+
+2. PhantomJS则是将其解压后的exe文件放在安装包的Scripts文件夹下   
+
+3. 代码实现
+
+```python
+from selenium import webdriver
+driver = webdriver.PhantomJS()
+driver.get('地址')
+driver.implicitly_wait(3) #等待加载
+elements = driver.find_elements_by_css_selector(".dgrid-content.ui-widget-content")
+for element in elements:
+    print(element.text)
+driver.quit()
+```
+
+需要添加等待，否则网页可能加载不完。而find_elements_by_css_selector是通过class定位，其可直接获取几层嵌套内部的text文本。  
 
 
 
+使用代理
 
 
 
