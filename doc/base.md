@@ -14,6 +14,8 @@
 
 ### 3.安装库  
 
+#### 1.安装一：下载安装  
+
 库的地址：``https://www.lfd.uci.edu/~gohlke/pythonlibs/#lxml``   
 
 1. beautifulsoup4-4.5.3   
@@ -41,9 +43,68 @@
 8. tornado  
 
 
-安装是否成功以导入是否报错为准   
+安装是否成功以导入是否报错为准    
 
-## 2.网站爬取   
+#### 2.安装二：命令安装     
+
+```
+pip install requests
+
+pip install BeautifulSoup4
+```
+
+## 2.BeautifulSoup
+
+**Beautiful Soup** 是一个可以从HTML或XML文件中提取数据的Python库，简单来说，它能将HTML的标签文件解析成树形结构，然后方便地获取到指定标签的对应属性。  
+
+_BeautifulSoup像一个源码阅读者，将需要的信息提取出来给你。_   
+
+![](../img/p01.png)  
+
+### 1.DOM操作获取内容   
+
+1. 获取网页源代码，包装为soup    
+
+```python
+import requests   
+res = requests.get("http://taobao.com")   
+soup = BeautifulSoup(res.text)   
+...
+```
+
+_用request去把网站源码下载来，放进BeautifulSoup工具中_   
+
+2. 从soup中抽取内容
+
+抽取h1 , a     ``soup.select('h1')`` , ``soup.select('a')``   就能拿到带标签的内容    
+
+由于select出来的是List,所以用角标获取内容：``item.select('strong')[0].text``     
+
+_只要告诉soup需要的元素标签/类，它就会把所有的标签拿给你。因为是很多个标签，所以是以List的方式存放。只要添加[0]脚标就可以把第一个元素拿出来。而要拿到标签里面的具体内容，添加text方法就可以了_   
+
+3. 去除空白小操作   
+
+``item.select('strong')[0].text.strip``    
+
+## 3.post请求网页   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 3.网站爬取   
 
 ### 1.获取网页源码   
 
@@ -57,6 +118,8 @@ soup = BeautifulSoup(wb_data.text,'lxml')
 
 print(soup)
 ```
+
+
 
 ### 2.获取指定标签对象   
 
