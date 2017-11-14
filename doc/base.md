@@ -86,7 +86,7 @@ _只要告诉soup需要的元素标签/类，它就会把所有的标签拿给�
 
 ``item.select('strong')[0].text.strip``    
 
-## 3.post请求网页   
+
 
 
 
