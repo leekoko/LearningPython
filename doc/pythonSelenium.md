@@ -128,7 +128,14 @@ driver.quit()  #退出浏览器
    time.sleep(1)  
    ```
 
+6. time的使用需要引入
 
+
+   ```python
+   import time 
+   ```
+
+   ​
 
 ### 4.其他定位技巧
 
@@ -606,6 +613,12 @@ gettime.get_system_time()   #方法
 ```python
 x = input('What is your name?')  
 print('Hello',x)  
+```
+
+#### 5.长度方法   
+
+```python
+len(places)
 ```
 
 
