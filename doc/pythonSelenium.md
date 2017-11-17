@@ -1,4 +1,4 @@
-# 【系列】Python+Selenium自动化测试框架
+# 【系列】Python3碎片基础
 
 ### 1.使用webdriver打开浏览器    
 
@@ -34,7 +34,6 @@ driver.quit()     #关闭并退出浏览器
    driver.set_window_size(1280,800)  # 分辨率 1280*800  
    ```
 
-   ​
 
 
 
@@ -67,11 +66,7 @@ eg:
 
 ``.//*/label[@for='newstitle']/../input[@id='newstitle']``  前面的表示目标元素，后面的表示定位元素     
 
-
-
 （feiman：XPATH需要进一步研究）    
-
-
 
 ### 3.自动化测试脚本
 
@@ -135,8 +130,6 @@ driver.quit()  #退出浏览器
 
 
 
-
-
 ### 4.其他定位技巧
 
 1. 通过id定位    
@@ -191,9 +184,6 @@ driver.quit()  #退出浏览器
 
    使用css的语法来定位，#su 表示 id = su   ,而上面通过id来定位是不需要加#的。
 
-8. ​
-
-   ​
 
 ### 5.正则表达式
 
@@ -274,14 +264,349 @@ print (driver.title)  # title方法可以获取当前页面的标题显示的字
 
 #### 4.触发键盘按钮    
 
+1. 添加标签
+
+   ```python
+   driver.get("http://www.baidu.com/")  
+   time.sleep(1)  
+   ele = driver.find_element_by_tag_name('body').send_keys(Keys.CONTROL + 't')  # 触发ctrl + t  
+   time.sleep(1)  
+   ```
+
+   打开新的tab前，要模拟人类操作，适当停一停    
+
+2. 全选当前页面的文字    
+
+   ```python
+   element = driver.find_element_by_tag_name('body')  
+   element.send_keys(Keys.CONTROL + 'a')  
+   ```
+
+
+3. 全选删除文字    
+
+   ```python
+   element.send_keys(Keys.CONTROL+'a')  
+   element.send_keys(Keys.BACKSPACE)  
+   ```
+
+4. 右键图像
+
+   ```python
+   element = driver.find_element_by_xpath("//*[@id='lg']/img")  
+   actionChains = ActionChains(driver)  
+   actionChains.context_click(element).perform()
+   ```
+
+   ActionChains用来右键目标。
+
+#### 5.执行js代码      
+
 ```python
-driver.get("http://www.baidu.com/")  
-time.sleep(1)  
-ele = driver.find_element_by_tag_name('body').send_keys(Keys.CONTROL + 't')  # 触发ctrl + t  
-time.sleep(1)  
+driver.execute_script("window.alert('这是一个alert弹框。');") #直接插入js执行
+
+# 使用js做滚动
+driver.execute_script("return arguments[0].scrollIntoView();",target_elem) # 用目标元素参考去拖动 
+# 随便的拖动
+driver.execute_script("scroll(0,2400)") # 这个是第二种方法，比较粗劣，大概的拖动  
 ```
 
-打开新的tab前，要模拟人类操作，适当停一停    
+#### 6.切换窗口   
+
+```python
+import time  
+from selenium import webdriver  
+  
+driver = webdriver.Chrome()  
+driver.get('http://news.baidu.com')  
+time.sleep(1)  
+  
+driver.find_element_by_xpath("//*[@id='pane-news']/div/ul/li[1]/strong/a").click()  
+print (driver.current_window_handle) # 输出当前窗口句柄  
+handles = driver.window_handles # 获取当前全部窗口句柄集合  
+print (handles) # 输出句柄集合  
+  
+for handle in handles:# 切换窗口  
+    if handle != driver.current_window_handle:  
+        print ('switch to second window',handle)  
+        driver.close() # 关闭第一个窗口  
+        driver.switch_to.window(handle) #切换到第二个窗口  
+```
+
+执行点击之后，核心的切换窗口代码只有：
+
+```python
+driver.find_element_by_xpath("//*[@id='pane-news']/div/ul/li[1]/strong/a").click()  
+handles = driver.window_handles # 获取当前全部窗口句柄集合
+
+for handle in handles:# 切换窗口 
+        driver.close() # 关闭第一个窗口  
+        driver.switch_to.window(handle) #切换到第二个窗口  
+```
+
+### 7.方法常用
+
+#### 1.断言
+
+所谓的断言作用是测试程序在我的假设条件下，是否能够正常良好的运作。assert与if的作用相似。
+
+```python
+# coding=utf-8  
+import time  
+from selenium import webdriver  
+  
+driver = webdriver.Chrome()  
+#driver.maximize_window()  
+driver.get('https://www.baidu.com')  
+time.sleep(1)  
+# 方法一  
+try:  
+    assert "百度一下" in driver.title  
+    print ("Assertion test pass.")  
+except Exception as e:  
+    print ("Assertion test fail.", format(e))  
+  
+# 方法二  
+if "百度一下，你就知道" == driver.title :  
+    print ("Assertion test pass.")  
+else:  
+    print ("Assertion test fail.")  
+  
+print (driver.title)  
+```
+
+没法设置窗口大小，可能是插件与系统位数不兼容。
+
+#### 2.获取属性的方法   
+
+1. 获取文本
+
+```python
+# 断言方法二，本文重点介绍方法  
+error_mes = driver.find_element_by_xpath("//*[@id='TANGRAM__PSP_8__error']").text  
+try:  
+    assert error_mes == u'请您填写手机/邮箱/用户名'  
+    print ('Test pass.')  
+except Exception as e:  
+    print ("Test fail.", format(e))  
+```
+
+2. 获取id
+
+```python
+print (link.get_attribute('id'))  
+```
+
+3. 获取href
+
+```python
+print (link.get_attribute('href'))  
+```
+
+
+
+#### 3.is_selected判断选中方法   
+
+```python
+try:  
+    driver.find_element_by_xpath("//*[@id='news']").is_selected()  
+    print ('Test Pass.')  
+except Exception as e:  
+    print ('Test fail',format(e))  
+```
+
+#### 4.切换iframe   
+
+定位没问题，但就是获取不到元素。查看开发者工具，火狐可以判断其是否为Top Window，不是的话需要对iframe进行切换    
+
+```python
+driver.switch_to.frame("iframe1")  
+```
+
+#### 5.截图页面   
+
+像遇到错误的情况，就可能需要截图   
+
+```python
+# coding=utf-8  
+import time  
+from selenium import webdriver  
+  
+driver = webdriver.Chrome()  
+driver.implicitly_wait(6)  
+driver.get("https://www.baidu.com")  
+time.sleep(1)  
+  
+driver.get_screenshot_as_file("D:\\baidu.png")  
+driver.quit()  
+```
+
+分隔符 \ 需要变成 \ \
+
+### 8.基础语法   
+
+#### 1.类与方法   
+
+Demo 1：  类与方法介绍
+
+```python
+# coding=utf-8  
+  
+class ClassA(object):  
+  
+    string1  = "这是一个字符串。"  
+  
+    def instancefunc(self):  
+        print ('这是一个实例方法。')  
+        print (self)  
+ 
+    @classmethod  
+    def classfunc(cls):  
+        print ('这是一个类方法。')  
+        print (cls)  
+ 
+    @staticmethod  
+    def staticfun():  
+        print ('这是一个静态方法。')  
+  
+  
+test = ClassA()  # 初始化一个ClasssA的对象，test是类ClassA的实例对象  
+test.instancefunc()  # 对象调用实例方法  
+  
+test.staticfun()  # 对象调用静态方法  
+  
+test.classfunc()  # 对象调用类方法  
+  
+print test.string1 # 对象调用类变量  
+  
+ClassA.instancefunc(test)  # 类调用实例方法，需要带参数，这里的test是一个对象参数  
+ClassA.instancefunc(ClassA) # 类调用实例方法，需要带参数，这里的ClassA是一个类参数  
+ClassA.staticfun() # 类调用静态方法  
+ClassA.classfunc()  # 类调用类方法  
+```
+
+Demo 2：类方法调用   
+
+```python
+# coding=utf-8  
+import time  
+from selenium import webdriver  
+  
+class BaiduSearch(object):  
+    driver = webdriver.Chrome()  
+    driver.maximize_window()  
+    driver.implicitly_wait(10)  
+  
+    def open_baidu(self):  
+        self.driver.get("https://www.baidu.com")  
+        time.sleep(1)  
+  
+    def test_search(self):  
+        self.driver.find_element_by_id('kw').send_keys("selenium")  
+        time.sleep(1)  
+        print self.driver.title  
+        try:  
+            assert 'selenium' in self.driver.title  
+            print ('Test pass.')  
+  
+        except Exception as e:  
+            print ('Test fail.')  
+        self.driver.quit()  
+  
+baidu = BaiduSearch()  
+baidu.open_baidu()  
+baidu.test_search()  
+```
+
+Demo 3：调用截取图片方法
+
+```python
+class BasePage(object):     
+    def take_screenshot(self):  
+        """ 
+        截图并保存在根目录下的Screenshots文件夹下 
+        :param none: 
+        """  
+        file_path = os.path.dirname(os.getcwd()) + '/Screenshots/'  
+        rq = time.strftime('%Y%m%d%H%M%S',time.localtime(time.time()))  
+        screen_name = file_path + rq + '.png'  
+        try :  
+            self.driver.get_screenshot_as_file(screen_name)  
+            mylog.info("开始截图并保存")  
+  
+        except Exception as e:  
+            mylog.error("出现异常",format(e)) 
+```
+
+```python
+# coding=utf-8  
+import time  
+from selenium import webdriver  
+from test.basepage import BasePage  
+  
+class TestScreenshot(object):  
+    driver = webdriver.Chrome()  
+    driver.maximize_window()  
+    driver.implicitly_wait(10)  
+    basepage = BasePage(driver)  
+  
+    def test_take_screen(self):  
+        self.basepage.open_url("https://www.baidu.com")  
+        time.sleep(1)  
+        self.basepage.take_screenshot()  
+        self.basepage.quit_browser()  
+  
+test = TestScreenshot()  
+test.test_take_screen()  
+```
+
+#### 2.操作时间
+
+```python
+# coding=utf-8  
+import time  
+
+class GetTime(object):  
+    def get_system_time(self):  
+        print (time.time()) # time.time()获取的是从1970年到现在的间隔，单位是秒  
+        print (time.localtime())  
+        new_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) # 格式化时间，按照 2017-04-15 13:46:32的格式打印出来  
+        print (new_time)  
+  
+gettime = GetTime()  #类
+gettime.get_system_time()   #方法  
+```
+
+#### 3.IO文件
+
+1. 写入
+
+   ```python
+   text = "Sample Text to Save \nNew Line"  
+     
+   ''''' 
+   调用buid-in函数：open打开或者创建文件， 
+   如果exampleFile.txt不存在，就自动创建 
+   w在这里表示可以写的模式，如果是读那就'r' 
+   '''  
+   saveFile = open('exampleFile.txt', 'w')  
+   saveFile.write(text)    #追加
+   saveFile.close()  # 操作完文件后一定要记得关闭，释放内存资源  
+   ```
+
+2. 读取
+
+   ```python
+   readMe = open('exampleFile.txt','r').read()  
+   print(readMe)  
+   ```
+
+#### 4.获取键盘输入    
+
+```python
+x = input('What is your name?')  
+print('Hello',x)  
+```
 
 
 
@@ -291,9 +616,21 @@ time.sleep(1)
 
 
 
-http://blog.csdn.net/u011541946/article/details/69694510
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+书籍：XPATH的使用方式
 
 
 
