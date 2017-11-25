@@ -18,5 +18,7 @@
 
 ## 2.案例代码分析专题   
 
-### 1.[tripadvisor网站爬取](doc/tripadvisor.md)  
+### 1.[tripadvisor网站爬取](doc/tripadvisor.md)      
+
+### 2.[58同城爬取](doc/58City.md)
 
