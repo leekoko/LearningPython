@@ -1,24 +1,6 @@
 # Python专题   
 
-## 1.知识点专题
-
-### 1.[python入门(待整合)](doc/base.md)    
-
-### 2.[Python3碎片基础（待整合）](doc/pythonSelenium.md)         
+### 1.[BeautifulSoup处理爬取信息](doc/BeautifulSoup.md)  
 
 
-
-###    
-
-
-
-
-
----
-
-## 2.案例代码分析专题   
-
-### 1.[tripadvisor网站爬取](doc/tripadvisor.md)      
-
-### 2.[58同城爬取](doc/58City.md)
 
