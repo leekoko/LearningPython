@@ -99,6 +99,8 @@ _调用名称，传进url_
 urls = ['https://www.tripadvisor.cn/Attractions-g60763-Activities-oa{}-New_York_City_New_York.html#ATTRACTION_LIST'.format(str(i)) for i in range(0,930,30)]
 ```
 
+用{}作为占位符  
+
 _定义一大堆有规律的数组很麻烦，所以python就想到用一个规律的式子代表所有的元素。range（30，930，30）说明从30开始，到930，步长为30。所以打印出来的数字将会是0，30，60，90，120..._   
 
 ### 2.调用方法，传入url
