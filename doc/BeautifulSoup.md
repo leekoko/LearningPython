@@ -157,3 +157,7 @@ mb_data = requests.get(url,headers = headers)
 在request请求的时候传入头文件的User-Agent   
 
 （很尴尬的是，该页面的手机版也做了相应的反爬手段，爬到的img地址还是一样的...）  
+
+---
+
+文档地址：https://www.crummy.com/software/BeautifulSoup/bs4/doc.zh/

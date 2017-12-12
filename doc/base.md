@@ -28,7 +28,7 @@
 
 2. request    
 
-   解压request文件，将其copy到python的lib下完成安装   
+   解压request文件，将其copy到python的lib下完成安装（copy有init.py的文件）   
 
 3. urllib3
 
