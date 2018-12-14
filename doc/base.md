@@ -179,22 +179,3 @@ driver.quit()
 ```
 
 需要添加等待，否则网页可能加载不完。而find_elements_by_css_selector是通过class定位，其可直接获取几层嵌套内部的text文本。  
-
-
-
-使用代理
-
-
-
-
-
-11课后续：request伪造登陆信息    
-
-  
-
-
-
-
-
-
-
