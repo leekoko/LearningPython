@@ -8,7 +8,7 @@ BeautifulSoup是一个智能的处理工具，用户只要将抓取到的网页�
 
 ![](../img/p02.png)   		
 
-​	爬取的目标是：每一页的标题、标签、图片地址（爬取失败）   
+	爬取的目标是：每一页的标题、标签、图片地址（爬取失败）   
 
 ### 2.爬取源码   
 
@@ -158,6 +158,8 @@ mb_data = requests.get(url,headers = headers)
 
 （很尴尬的是，该页面的手机版也做了相应的反爬手段，爬到的img地址还是一样的...）  
 
----
+
+
+
 
 文档地址：https://www.crummy.com/software/BeautifulSoup/bs4/doc.zh/
